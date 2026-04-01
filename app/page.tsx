@@ -6,17 +6,17 @@ import Product from "@/components/product/Product";
 import { getProducts } from "@/services/product";
 
 export const metadata: Metadata = {
-  title: "Beranda",
+  title: "Ziyadbooks | Catalog",
   description:
     "Belanja produk pilihan di Ziyadbooks dengan promo spesial, katalog modern, dan navigasi yang nyaman di semua perangkat.",
   openGraph: {
-    title: "Ziyadbooks | Beranda",
+    title: "Ziyadbooks | Catalog",
     description:
       "Belanja produk pilihan di Ziyadbooks dengan promo spesial, katalog modern, dan navigasi yang nyaman di semua perangkat.",
     url: "/",
   },
   twitter: {
-    title: "Ziyadbooks | Beranda",
+    title: "Ziyadbooks | Catalog",
     description:
       "Belanja produk pilihan di Ziyadbooks dengan promo spesial dan katalog modern.",
   },

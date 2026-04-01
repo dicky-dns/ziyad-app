@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ziyadbooks.com"),
   title: {
     default: "Ziyadbooks",
-    template: "%s | Ziyadbooks",
+    template: "%s",
   },
   description:
     "Ziyadbooks menghadirkan katalog produk pilihan dengan promo menarik dan pengalaman belanja online yang cepat.",
@@ -62,12 +62,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-  },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
-  },
+  }
 };
 
 export default function RootLayout({
