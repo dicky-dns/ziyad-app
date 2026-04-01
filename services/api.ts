@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
+const BASE_URL = "https://api-dev.ziyadbooks.com/api/v1";
 
 type RequestOptions = {
   method?: "GET" | "POST" | "PUT" | "DELETE";
@@ -9,24 +9,13 @@ export const api = async <T>(
   endpoint: string,
   options: RequestOptions = {}
 ): Promise<T> => {
-  if (!BASE_URL) {
-    throw new Error(
-      "Missing API_BASE_URL or NEXT_PUBLIC_API_BASE_URL environment variable"
-    );
-  }
-
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  };
-
-  if (process.env.NEXT_PUBLIC_API_TOKEN) {
-    headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`;
-  }
-
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     method: options.method || "GET",
-    headers,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${process.env.API_TOKEN}`,
+    },
     body: options.body ? JSON.stringify(options.body) : undefined,
     cache: "no-store",
   });
