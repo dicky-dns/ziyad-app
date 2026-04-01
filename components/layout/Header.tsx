@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
 
@@ -9,14 +10,16 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-20 px-1 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
           
           <div className="flex items-center">
-            <Image
-              src="/logo.svg"
-              alt="ZiyadStore"
-              width={140}
-              height={40}
-              priority
-              className="h-8 w-auto md:h-9"
-            />
+            <Link href="/">
+              <Image
+                src="/logo.svg"
+                alt="ZiyadStore"
+                width={140}
+                height={40}
+                priority
+                className="h-8 w-auto md:h-9"
+              />
+            </Link>
           </div>
 
         </div>
