@@ -20,7 +20,7 @@ export const api = async <T>(
     Accept: "application/json",
   };
 
-  if (process.env.API_TOKEN) {
+  if (process.env.NEXT_PUBLIC_API_TOKEN) {
     headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`;
   }
 
