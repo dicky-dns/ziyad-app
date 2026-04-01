@@ -1,45 +1,43 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useCallback, useState } from "react";
+
 import { PaginatedResponse, Product } from "@/types/types";
-import { getProducts } from "@/services/product";
 
 type UseProductReturn = {
   products: Product[];
   page: number;
   lastPage: number;
   loading: boolean;
-  fetchPage: (page: number) => void;
+  fetchPage: (page: number) => Promise<void>;
 };
 
 export const useProduct = (
   initialData: PaginatedResponse<Product>
 ): UseProductReturn => {
-  const [products, setProducts] = useState<Product[]>(
-    initialData.data.data
-  );
-  const [page, setPage] = useState<number>(
-    initialData.data.current_page
-  );
-  const [lastPage, setLastPage] = useState<number>(
-    initialData.data.last_page
-  );
+  const [products, setProducts] = useState<Product[]>(initialData.data.data);
+  const [page, setPage] = useState<number>(initialData.data.current_page);
+  const [lastPage, setLastPage] = useState<number>(initialData.data.last_page);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const fetchPage = useCallback(
+    async (targetPage: number): Promise<void> => {
+      if (targetPage === page || targetPage < 1 || targetPage > lastPage) {
+        return;
+      }
 
-  const fetchPage = useCallback((targetPage: number): void => {
-    if (targetPage === page) return;
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(async () => {
       setLoading(true);
 
       try {
-        const json = await getProducts(targetPage);
+        const response = await fetch(`/api/products?page=${targetPage}&limit=12`, {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const json: PaginatedResponse<Product> = await response.json();
 
         if (!json.data) {
           return;
@@ -48,12 +46,16 @@ export const useProduct = (
         setProducts(json.data.data);
         setPage(json.data.current_page);
         setLastPage(json.data.last_page);
-      } catch {
+
+        const url = new URL(window.location.href);
+        url.searchParams.set("page", String(json.data.current_page));
+        window.history.pushState({}, "", url);
       } finally {
         setLoading(false);
       }
-    }, 300);
-  }, [page]);
+    },
+    [lastPage, page]
+  );
 
   return {
     products,

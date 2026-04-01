@@ -1,6 +1,6 @@
 export default function ProductLoading() {
   return (
-    <div className="bg-white min-w-[400px] rounded-2xl shadow-sm p-3 animate-pulse">
+    <div className="bg-white md:min-w-[370px] rounded-2xl shadow-sm p-3 animate-pulse">
       <div className="h-40 w-full rounded-xl bg-gray-200" />
 
       <div className="mt-3 space-y-2">

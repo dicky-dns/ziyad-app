@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-
 import Pagination from "../layout/Pagination";
 import { useProduct } from "@/hooks/useProduct";
 import { PaginatedResponse, Product as ProductType } from "@/types/types";
@@ -13,19 +10,7 @@ type Props = {
 };
 
 export default function Product({ initialData }: Props) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
-
-  const { products, lastPage, loading, fetchPage } = useProduct(initialData);
-
-  useEffect(() => {
-    fetchPage(currentPage);
-  }, [currentPage, fetchPage]);
-
-  const handlePageChange = (nextPage: number): void => {
-    router.push(`?page=${nextPage}`);
-  };
+  const { products, page, lastPage, loading, fetchPage } = useProduct(initialData);
 
   return (
     <section id="produk" className="pt-2 md:pt-4">
@@ -35,11 +20,7 @@ export default function Product({ initialData }: Props) {
 
       <ProductList products={products} loading={loading} />
 
-      <Pagination
-        page={currentPage}
-        lastPage={lastPage}
-        onChange={handlePageChange}
-      />
+      <Pagination page={page} lastPage={lastPage} onChange={fetchPage} />
     </section>
   );
 }
