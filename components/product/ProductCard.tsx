@@ -6,21 +6,35 @@ import { useState } from "react";
 import { Product } from "@/types/types";
 
 export default function ProductCard({ item }: { item: Product }) {
-  const [imageSrc, setImageSrc] = useState(item.image_url || "/default.png");
+  const [hasImageError, setHasImageError] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const imageSrc = hasImageError ? "/default.png" : item.image_url || "/default.png";
 
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-3 flex flex-col">
       <div className="relative h-30 w-full overflow-hidden rounded-xl md:h-50">
+        <div
+          className={`absolute inset-0 z-10 bg-gray-200 transition-opacity duration-300 ${
+            isImageLoading ? "animate-pulse opacity-100" : "opacity-0"
+          }`}
+        />
         <Image
+          key={imageSrc}
           src={imageSrc}
           alt={item.name}
           fill
           unoptimized
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover"
-          onError={() => setImageSrc("/default.png")}
+          className={`object-cover transition-opacity duration-300 ${
+            isImageLoading ? "opacity-0" : "opacity-100"
+          }`}
+          onLoad={() => setIsImageLoading(false)}
+          onError={() => {
+            setHasImageError(true);
+            setIsImageLoading(true);
+          }}
         />
-        {item.preorder === true && (
+        {item.preorder === true && ! isImageLoading && (
           <span className="rounded-lg bg-[#edf7eb] px-2 py-1 text-xs font-semibold text-[#2f7f31] absolute top-1 md:top-2 right-1 md:right-3 shadow-sm">
             Preorder
           </span>
